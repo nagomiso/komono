@@ -32,7 +32,11 @@ class Elbow(object):
             n_clusters=n_clusters, inertias=inertias
         )
         if self._draw:
-            self._draw_elbow_chart(n_clusters=n_clusters, inertias=inertias)
+            self._draw_elbow_chart(
+                optimal_n_clusters=self.optimal_n_clusters,
+                n_clusters=n_clusters,
+                inertias=inertias,
+            )
         return self
 
     @staticmethod
@@ -42,8 +46,8 @@ class Elbow(object):
         max_score: float = -1.0
         optimal_n_clusters: int = -1
 
-        x_kmin, y_kmin = 0.0, inertias[0]
-        x_kmax, y_kmax = len(n_clusters), inertias[-1]
+        x_kmin, y_kmin = n_clusters[0], inertias[0]
+        x_kmax, y_kmax = n_clusters[-1], inertias[-1]
         const = x_kmin * y_kmax - x_kmax * y_kmin
 
         # Calculating distance from each point (x_k, y_k) to line segment from
@@ -66,7 +70,10 @@ class Elbow(object):
                 optimal_n_clusters = x_k
         return optimal_n_clusters
 
-    def _draw_elbow_chart(self, n_clusters: List[int], inertias: List[float]) -> None:
+    @staticmethod
+    def _draw_elbow_chart(
+        optimal_n_clusters: int, n_clusters: List[int], inertias: List[float]
+    ) -> None:
         fig, ax = plt.subplots()
         ax = sns.lineplot(
             x=n_clusters,
@@ -78,7 +85,7 @@ class Elbow(object):
         ax.set_xlabel("Number of Clusters")
         ax.set_ylabel("Inertia")
         ax.vlines(
-            x=self.optimal_n_clusters,
+            x=optimal_n_clusters,
             ymin=min(inertias),
             ymax=max(inertias),
             colors="black",
