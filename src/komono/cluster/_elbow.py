@@ -23,7 +23,7 @@ class Elbow(object):
     def fit(self, X: Union[list, ndarray]) -> "Elbow":
         n_clusters: List[int] = []
         inertias: List[float] = []
-        for k in range(self._kmin, self._kmax):
+        for k in range(self._kmin, self._kmax + 1):
             self._kmeans.set_params(n_clusters=k)
             self._kmeans.fit(X)
             n_clusters.append(k)
