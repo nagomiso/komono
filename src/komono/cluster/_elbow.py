@@ -23,7 +23,7 @@ class Elbow(object):
     def fit(self, X: Union[list, ndarray]) -> "Elbow":
         n_clusters: List[int] = []
         inertias: List[float] = []
-        for k in range(self._kmin, self._kmax):
+        for k in range(self._kmin, self._kmax + 1):
             self._kmeans.set_params(n_clusters=k)
             self._kmeans.fit(X)
             n_clusters.append(k)
@@ -46,12 +46,12 @@ class Elbow(object):
         max_score: float = -1.0
         optimal_n_clusters: int = -1
 
-        x_kmin, y_kmin = n_clusters[0], inertias[0]
-        x_kmax, y_kmax = n_clusters[-1], inertias[-1]
+        x_kmin, y_kmin = float(n_clusters[0]), inertias[0]
+        x_kmax, y_kmax = float(n_clusters[-1]), inertias[-1]
         const = x_kmin * y_kmax - x_kmax * y_kmin
 
         # Calculating distance from each point (x_k, y_k) to line segment from
-        # kmin-point (x_kmin, y_kmax) to kmax-point (x_kmax, y_kmin)
+        # kmin-point (x_kmin, y_kmin) to kmax-point (x_kmax, y_kmax)
         # and the point where is the longest distance is considered optimal point.
         #
         # The formula for distance is bellow.
