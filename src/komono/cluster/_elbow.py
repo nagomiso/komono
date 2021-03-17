@@ -1,6 +1,7 @@
 from typing import List, Union
 
 import seaborn as sns
+import matplotlib.pyplot as plt
 from numpy import ndarray
 from sklearn.cluster import KMeans, MiniBatchKMeans
 
@@ -66,6 +67,7 @@ class Elbow(object):
         return optimal_n_clusters
 
     def _draw_elbow_chart(self, n_clusters: List[int], inertias: List[float]) -> None:
+        fig, ax = plt.subplots()
         ax = sns.lineplot(
             x=n_clusters,
             y=inertias,
@@ -73,9 +75,8 @@ class Elbow(object):
             style=0,
             legend=False,
         )
-        ax.set_xlabel("N Clusters")
-        ax.set_ylabel("Inertias")
-        ax.set_xticks(n_clusters)
+        ax.set_xlabel("Number of Clusters")
+        ax.set_ylabel("Inertia")
         ax.vlines(
             x=self.optimal_n_clusters,
             ymin=min(inertias),
@@ -84,3 +85,4 @@ class Elbow(object):
             linestyle="--",
             linewidths=2,
         )
+        fig.tight_layout()
