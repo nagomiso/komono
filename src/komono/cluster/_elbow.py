@@ -76,7 +76,7 @@ class Elbow(object):
         ax.set_xlabel("N Clusters")
         ax.set_ylabel("Inertias")
         ax.set_xticks(n_clusters)
-        ax.vline(
+        ax.vlines(
             x=self.optimal_n_clusters,
             ymin=min(inertias),
             ymax=max(inertias),
