@@ -1,10 +1,10 @@
-from typing import Any, Optional, Union, List
 from numbers import Number
+from typing import Any, List, Optional, Union
 
 import pandas as pd
+import seaborn as sns
 from matplotlib.colors import Colormap, Normalize
 from numpy import ndarray
-import seaborn as sns
 from seaborn import JointGrid
 
 
