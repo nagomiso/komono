@@ -51,10 +51,10 @@ class Elbow(object):
         #
         # The formula for distance is bellow.
         #
-        #    |(y_kmin - y_kmax) * x_k + (x_kmax - x_kmin) * y_k|
-        #    |     + (x_kmin * y_kmax - x_kmax * y_kmin)       |
-        #   -----------------------------------------------------
-        #           sqrt((x1 - x0) ** 2 + (y1 - y0) ** 2)
+        #     |(y_kmin - y_kmax) * x_k + (x_kmax - x_kmin) * y_k|
+        #     |     + (x_kmin * y_kmax - x_kmax * y_kmin)       |
+        #   -------------------------------------------------------
+        #    sqrt((x_kmax - x_kmin) ** 2 + (y_kmax - y_kmin) ** 2)
         #
         # But, the denominator is constant in the case of search the point
         # where is the longest distance, so we can ignore the denominator.
