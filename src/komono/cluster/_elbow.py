@@ -1,7 +1,7 @@
 from typing import List, Union
 
-import seaborn as sns
 import matplotlib.pyplot as plt
+import seaborn as sns
 from numpy import ndarray
 from sklearn.cluster import KMeans, MiniBatchKMeans
 
