@@ -27,7 +27,7 @@ def jointplot(
     hue: Optional[Union[str, list, ndarray]] = None,
     palette: Optional[Union[str, list, dict, Colormap]] = None,
     hue_order: Optional[List[str]] = None,
-    hue_norm: Optional[tuple, Normalize] = None,
+    hue_norm: Optional[Union[tuple, Normalize]] = None,
     **kwargs
 ) -> Tuple[JointGrid, pd.DataFrame]:
     if isinstance(data, pd.DataFrame):
