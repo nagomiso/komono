@@ -1,5 +1,6 @@
 from numbers import Number
 from typing import List, Optional, Tuple, Union
+import math
 
 from matplotlib.colors import Colormap, Normalize
 from numpy import ndarray
@@ -42,27 +43,33 @@ def jointplot(
     df_embedding: pd.DataFrame = pd.DataFrame(
         data=X_embedding, index=data.index, columns=["x1", "x2"]
     )
-    return (
-        sns.jointplot(
-            data=df_embedding.reset_index(hue),
-            x="x1",
-            y="x2",
-            kind=kind,
-            color=color,
-            height=height,
-            ratio=ratio,
-            space=space,
-            dropna=dropna,
-            xlim=xlim,
-            ylim=ylim,
-            marginal_ticks=marginal_ticks,
-            joint_kws=joint_kws,
-            marginal_kws=marginal_kws,
-            hue=hue,
-            palette=palette,
-            hue_order=hue_order,
-            hue_norm=hue_norm,
-            **kwargs,
-        ),
-        df_embedding,
+    data_for_plot = df_embedding.reset_index(hue)
+    g: JointGrid = sns.jointplot(
+        data=data_for_plot,
+        x="x1",
+        y="x2",
+        kind=kind,
+        color=color,
+        height=height,
+        ratio=ratio,
+        space=space,
+        dropna=dropna,
+        xlim=xlim,
+        ylim=ylim,
+        marginal_ticks=marginal_ticks,
+        joint_kws=joint_kws,
+        marginal_kws=marginal_kws,
+        hue=hue,
+        palette=palette,
+        hue_order=hue_order,
+        hue_norm=hue_norm,
+        **kwargs,
     )
+    g.ax_joint.legend(
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.15),
+        fancybox=True,
+        shadow=True,
+        ncol=math.ceil(math.sqrt(data_for_plot[hue].unique().size)),
+    )
+    return g, df_embedding
