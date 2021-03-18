@@ -1,8 +1,9 @@
 from typing import List, Union
 
 import matplotlib.pyplot as plt
-import seaborn as sns
 from numpy import ndarray
+from scipy.sparse import spmatrix
+import seaborn as sns
 from sklearn.cluster import KMeans, MiniBatchKMeans
 
 
@@ -20,7 +21,7 @@ class Elbow(object):
         self._draw = draw
         self.optimal_n_clusters = -1
 
-    def fit(self, X: Union[list, ndarray]) -> "Elbow":
+    def fit(self, X: Union[list, ndarray, spmatrix]) -> "Elbow":
         n_clusters: List[int] = []
         inertias: List[float] = []
         for k in range(self._kmin, self._kmax + 1):
