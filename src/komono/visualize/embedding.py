@@ -32,7 +32,7 @@ def jointplot(
     if isinstance(hue, str):
         if data.columns.isin([hue]).sum():
             tmp_index = data.index
-            data = data.set_index(tmp_index.union([hue]))
+            data = data.reset_index().set_index(tmp_index.union([hue]))
     X = data.values
     X_embedding: ndarray = embedding_transformer.fit_transform(X)
     df_embedding: pd.DataFrame = pd.DataFrame(
