@@ -30,9 +30,13 @@ def jointplot(
     **kwargs
 ) -> Tuple[JointGrid, pd.DataFrame]:
     if isinstance(hue, str):
+        # Column with the same name
+        # as the value of "hue" argument are not embedding target
         if data.columns.isin([hue]).sum():
-            tmp_index = data.index
-            data = data.reset_index().set_index(tmp_index.union([hue]))
+            tmp_index_names = data.index.names
+            data = data.reset_index().set_index(
+                list(filter(None, tmp_index_names + [hue]))
+            )
     X = data.values
     X_embedding: ndarray = embedding_transformer.fit_transform(X)
     df_embedding: pd.DataFrame = pd.DataFrame(
