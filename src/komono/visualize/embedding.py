@@ -29,7 +29,7 @@ def jointplot(
     hue_norm: Optional[Union[tuple, Normalize]] = None,
     **kwargs
 ) -> Tuple[JointGrid, pd.DataFrame]:
-    if isinstance(str, hue):
+    if isinstance(hue, str):
         if data.columns.isin([hue]).sum():
             data = data.set_index([hue])
     X = data.values
