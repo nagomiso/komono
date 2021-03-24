@@ -1,7 +1,7 @@
 import pkg_resources
 
 
-def version():
+def version() -> str:
     return pkg_resources.get_distribution("komono").version
 
 

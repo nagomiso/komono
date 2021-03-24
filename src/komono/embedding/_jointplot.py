@@ -1,13 +1,14 @@
-from numbers import Number
-from typing import List, Optional, Tuple, Union
 import math
+from typing import Any, Dict, List, Optional, Tuple, Union
 
-from matplotlib.colors import Colormap, Normalize
-from numpy import ndarray
 import pandas as pd
 import seaborn as sns
+from matplotlib.colors import Colormap, Normalize
+from numpy import ndarray
 from seaborn import JointGrid
 from sklearn.base import BaseEstimator
+
+numeric = Union[int, float]
 
 
 def jointplot(
@@ -15,20 +16,22 @@ def jointplot(
     embedding_transformer: BaseEstimator,
     kind: str = "scatter",
     color: Optional[Union[str, Colormap]] = None,
-    height: Number = 6,
-    ratio: Number = 5,
-    space: Number = 0.2,
+    height: numeric = 6,
+    ratio: numeric = 5,
+    space: numeric = 0.2,
     dropna: bool = False,
-    xlim: Optional[Number] = None,
-    ylim: Optional[Number] = None,
+    xlim: Optional[numeric] = None,
+    ylim: Optional[numeric] = None,
     marginal_ticks: bool = False,
-    joint_kws: Optional[dict] = None,
-    marginal_kws: Optional[dict] = None,
-    hue: Optional[Union[str, List[Number], ndarray]] = None,
-    palette: Optional[Union[str, list, dict, Colormap]] = None,
+    joint_kws: Optional[Dict[str, Any]] = None,
+    marginal_kws: Optional[Dict[str, Any]] = None,
+    hue: Optional[Union[str, List[numeric], ndarray]] = None,
+    palette: Optional[
+        Union[str, List[Union[numeric, str]], Dict[str, Any], Colormap]
+    ] = None,
     hue_order: Optional[List[str]] = None,
-    hue_norm: Optional[Union[tuple, Normalize]] = None,
-    **kwargs
+    hue_norm: Optional[Union[Tuple[numeric], Normalize]] = None,
+    **kwargs: Any,
 ) -> Tuple[JointGrid, pd.DataFrame]:
     if isinstance(hue, str):
         # Column with the same name

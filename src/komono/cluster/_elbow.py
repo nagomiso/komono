@@ -1,10 +1,12 @@
 from typing import List, Union
 
 import matplotlib.pyplot as plt
+import seaborn as sns
 from numpy import ndarray
 from scipy.sparse import spmatrix
-import seaborn as sns
 from sklearn.cluster import KMeans, MiniBatchKMeans
+
+numeric = Union[int, float]
 
 
 class Elbow(object):
@@ -21,7 +23,7 @@ class Elbow(object):
         self._draw = draw
         self.optimal_n_clusters = -1
 
-    def fit(self, X: Union[list, ndarray, spmatrix]) -> "Elbow":
+    def fit(self, X: Union[List[numeric], ndarray, spmatrix]) -> "Elbow":
         n_clusters: List[int] = []
         inertias: List[float] = []
         for k in range(self._kmin, self._kmax + 1):
@@ -43,7 +45,7 @@ class Elbow(object):
     @staticmethod
     def _find_optimal_n_clusters(n_clusters: List[int], inertias: List[float]) -> int:
         # The implementation of this function is based on pyclustering.
-        # ref: https://github.com/annoviko/pyclustering/blob/0.10.1.2/pyclustering/cluster/elbow.py#L186
+        # ref: https://github.com/annoviko/pyclustering/blob/0.10.1.2/pyclustering/cluster/elbow.py#L186 # noqa
         max_score: float = -1.0
         optimal_n_clusters: int = -1
 
