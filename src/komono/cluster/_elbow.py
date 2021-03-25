@@ -1,5 +1,7 @@
-from typing import List, Union
+Make it enable to get matplotlib objects.from typing import List, Tuple, Union
 
+import matplotlib.axes.Axes
+import matplotlib.figure.Figure
 import matplotlib.pyplot as plt
 import seaborn as sns
 from numpy import ndarray
@@ -73,9 +75,8 @@ class Elbow(object):
                 optimal_n_clusters = x_k
         return optimal_n_clusters
 
-    @staticmethod
     def _draw_elbow_chart(
-        optimal_n_clusters: int, n_clusters: List[int], inertias: List[float]
+        self, optimal_n_clusters: int, n_clusters: List[int], inertias: List[float]
     ) -> None:
         fig, ax = plt.subplots()
         ax = sns.lineplot(
@@ -96,3 +97,12 @@ class Elbow(object):
             linewidths=2,
         )
         fig.tight_layout()
+        self.fig_ = fig
+        self.ax_ = ax
+
+    def get_chart(
+        self,
+    ) -> Tuple[matplotlib.figure.Figure, matplotlib.axes.Axes]:
+        if not hasattr(self, "fig_") or not hasattr(self, "ax_"):
+            raise AttributeError("Elbow chart hasn't be drawn")
+        return self.fig_, self.ax_
