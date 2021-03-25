@@ -1,4 +1,4 @@
-Make it enable to get matplotlib objects.from typing import List, Tuple, Union
+from typing import List, Tuple, Union
 
 import matplotlib.axes.Axes
 import matplotlib.figure.Figure
