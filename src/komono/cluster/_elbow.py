@@ -1,7 +1,7 @@
 from typing import List, Tuple, Union
 
-import matplotlib.axes.Axes
-import matplotlib.figure.Figure
+import matplotlib.axes
+import matplotlib.figure
 import matplotlib.pyplot as plt
 import seaborn as sns
 from numpy import ndarray
