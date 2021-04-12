@@ -1,8 +1,33 @@
 import pandas as pd
 import pytest
-from pandas.testing import assert_series_equal
+from pandas.testing import assert_frame_equal, assert_series_equal
 
 import komono.pandas._reduce_memory as rd
+
+
+@pytest.fixture
+def base_data():
+    return {
+        "int8": [-128, 127],
+        "int16": [-129, 127],
+        "Int8": [None, 127],
+        "Str": ["foo", "bar"],
+    }
+
+
+@pytest.fixture
+def base_dtype():
+    return {
+        "int8": "int64",
+        "int16": "int64",
+        "Int8": "Int64",
+        "Str": "string",
+    }
+
+
+@pytest.fixture
+def base_dataframe(base_data, base_dtype) -> pd.DataFrame:
+    return pd.DataFrame.from_dict(base_data).astype(base_dtype)
 
 
 @pytest.mark.parametrize(
@@ -73,3 +98,16 @@ def test_reduce_float_series(min_, max_, expected_dtype):
     expected = pd.Series([min_, max_], dtype=expected_dtype)
     actual = rd._reduce_float_series(series)
     assert_series_equal(actual, expected)
+
+
+def test_reduce_memory_usage(base_data, base_dataframe):
+    expected = pd.DataFrame.from_dict(data=base_data,).astype(
+        {
+            "int8": "int8",
+            "int16": "int16",
+            "Int8": "Int8",
+            "Str": "string",
+        }
+    )
+    actual = rd.reduce_memory_usage(base_dataframe, verbose=True)
+    assert_frame_equal(actual, expected)

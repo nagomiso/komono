@@ -37,10 +37,10 @@ def reduce_memory_usage(dataframe: pd.DataFrame, verbose: bool = False) -> pd.Da
             tmp.append(series)
     ret: pd.DataFrame = pd.concat(tmp, axis="columns")
     if verbose:
-        reduced_memory_usage = ret.memory_usage() / 2.0 ** 20
+        reduced_memory_usage = ret.memory_usage().sum() / 2.0 ** 20
         reduction_ratio = (raw_memory_usage - reduced_memory_usage) / raw_memory_usage
         print(
-            f"Memory usage decreased to {reduced_memory_usage:.3f}MiB: "
+            f"Memory usage decreased to {reduced_memory_usage:.3g}MiB: "
             f"{reduction_ratio:.2%} reduction",
             file=sys.stderr,
         )
