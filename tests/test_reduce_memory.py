@@ -31,6 +31,31 @@ def test_reduce_integer_series_not_nullable(min_, max_, expected_dtype):
 
 
 @pytest.mark.parametrize(
+    "min_,mid,max_,expected_dtype",
+    [
+        (-128, None, 127, "Int8"),
+        (-128, None, 128, "Int16"),
+        (-129, None, 127, "Int16"),
+        (-129, None, 128, "Int16"),
+        (-32_768, None, 32_767, "Int16"),
+        (-32_768, None, 32_768, "Int32"),
+        (-32_769, None, 32_767, "Int32"),
+        (-32_769, None, 32_768, "Int32"),
+        (-2_147_483_648, None, 2_147_483_647, "Int32"),
+        (-2_147_483_648, None, 2_147_483_648, "Int64"),
+        (-2_147_483_649, None, 2_147_483_647, "Int64"),
+        (-2_147_483_649, None, 2_147_483_648, "Int64"),
+    ],
+)
+def test_reduce_integer_series_nullable(min_, mid, max_, expected_dtype):
+    series = pd.Series([min_, mid, max_], dtype="Int64")
+    dtype = str(series.dtype)
+    expected = pd.Series([min_, mid, max_], dtype=expected_dtype)
+    actual = rd._reduce_integer_series(series, dtype=dtype)
+    assert_series_equal(actual, expected)
+
+
+@pytest.mark.parametrize(
     "min_,max_,expected_dtype",
     [
         (-65500.0, 65500.0, "float16"),
