@@ -20,7 +20,7 @@ NUMERICAL_DTYPES = {
 }
 
 
-def recude_memory_usage(dataframe: pd.DataFrame, verbose: bool = False) -> pd.DataFrame:
+def reduce_memory_usage(dataframe: pd.DataFrame, verbose: bool = False) -> pd.DataFrame:
     tmp: List[pd.Series] = []
     raw_memory_usage = dataframe.memory_usage().sum() / 2.0 ** 20
     for col in dataframe.columns:
