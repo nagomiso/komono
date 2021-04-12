@@ -1,3 +1,4 @@
+import sys
 from typing import List
 
 import numpy as np
@@ -36,8 +37,12 @@ def recude_memory_usage(dataframe: pd.DataFrame, verbose: bool = False) -> pd.Da
     if verbose:
         reduced_memory_usage = ret.memory_usage() / 2.0 ** 20
         reduction_ratio = (raw_memory_usage - reduced_memory_usage) / raw_memory_usage
-        print(reduction_ratio)
-    return dataframe
+        print(
+            f"Memory usage decreased to {reduced_memory_usage:.3f}MiB: "
+            f"{reduction_ratio:.2%} reduction",
+            file=sys.stderr,
+        )
+    return ret
 
 
 def _reduce_integer_series(series: pd.Series, dtype: str) -> pd.Series:
