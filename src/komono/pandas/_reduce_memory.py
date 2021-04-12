@@ -13,7 +13,6 @@ NUMERICAL_DTYPES = {
     "Int16",
     "Int32",
     "Int64",
-    "float8",
     "float16",
     "float32",
     "float64",
