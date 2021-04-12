@@ -67,10 +67,8 @@ def _reduce_integer_series(series: pd.Series, dtype: str) -> pd.Series:
 def _reduce_float_series(series: pd.Series) -> pd.Series:
     max_value = series.max()
     min_value = series.min()
-    if min_value > np.iinfo(np.float8).min and max_value < np.iinfo(np.float8).max:
-        return series.astype("float8")
-    if min_value > np.iinfo(np.float16).min and max_value < np.iinfo(np.float16).max:
+    if np.finfo(np.float16).min <= min_value and max_value <= np.finfo(np.float16).max:
         return series.astype("float16")
-    if min_value > np.iinfo(np.float32).min and max_value < np.iinfo(np.float32).max:
+    if np.finfo(np.float32).min <= min_value and max_value <= np.finfo(np.float32).max:
         return series.astype("float32")
     return series

@@ -28,3 +28,23 @@ def test_reduce_integer_series_not_nullable(min_, max_, expected_dtype):
     expected = pd.Series([min_, max_], dtype=expected_dtype)
     actual = rd._reduce_integer_series(series, dtype=dtype)
     assert_series_equal(actual, expected)
+
+
+@pytest.mark.parametrize(
+    "min_,max_,expected_dtype",
+    [
+        (-65500.0, 65500.0, "float16"),
+        (-65500.0, 65600.0, "float32"),
+        (-65600.0, 65500.0, "float32"),
+        (-65600.0, 65600.0, "float32"),
+        (-3.4028e38, 3.4028e38, "float32"),
+        (-3.4028235e38, 3.4028335e38, "float64"),
+        (-3.4028335e38, 3.4028235e38, "float64"),
+        (-3.4028335e38, 3.4028335e38, "float64"),
+    ],
+)
+def test_reduce_float_series(min_, max_, expected_dtype):
+    series = pd.Series([min_, max_], dtype="float64")
+    expected = pd.Series([min_, max_], dtype=expected_dtype)
+    actual = rd._reduce_float_series(series)
+    assert_series_equal(actual, expected)
