@@ -5,58 +5,26 @@ from pandas.testing import assert_series_equal
 import komono.pandas._reduce_memory as rd
 
 
-@pytest.fixture
-def int8_series() -> pd.Series:
-    data = [-128, 1, 2, 3, 127]
-    return pd.Series(data, dtype="int64")
-
-
-@pytest.fixture
-def int16_series() -> pd.Series:
-    data = [-32_768, -128, 1, 2, 3, 127, 32_767]
-    return pd.Series(data, dtype="int64")
-
-
-@pytest.fixture
-def int32_series() -> pd.Series:
-    data = [-2_147_483_648, -32_768, -128, 1, 2, 3, 127, 32_767, 2_147_483_647]
-    return pd.Series(data, dtype="int64")
-
-
-@pytest.fixture
-def int64_series() -> pd.Series:
-    data = [-9_223_372_036_854_775_808, 1, 2, 3, 9_223_372_036_854_775_807]
-    return pd.Series(data, dtype="int64")
-
-
-def test_int64_to_int8(int8_series):
-    dtype = str(int8_series.dtype)
-    expected = pd.Series([-128, 1, 2, 3, 127], dtype="int8")
-    actual = rd._reduce_integer_series(int8_series, dtype=dtype)
-    assert_series_equal(actual, expected)
-
-
-def test_int64_to_int16(int16_series):
-    dtype = str(int16_series.dtype)
-    expected = pd.Series([-32_768, -128, 1, 2, 3, 127, 32_767], dtype="int16")
-    actual = rd._reduce_integer_series(int16_series, dtype=dtype)
-    assert_series_equal(actual, expected)
-
-
-def test_int64_to_int32(int32_series):
-    dtype = str(int32_series.dtype)
-    expected = pd.Series(
-        [-2_147_483_648, -32_768, -128, 1, 2, 3, 127, 32_767, 2_147_483_647],
-        dtype="int32",
-    )
-    actual = rd._reduce_integer_series(int32_series, dtype=dtype)
-    assert_series_equal(actual, expected)
-
-
-def test_int64_to_int64(int64_series):
-    dtype = str(int64_series.dtype)
-    expected = pd.Series(
-        [-9_223_372_036_854_775_808, 1, 2, 3, 9_223_372_036_854_775_807], dtype="int64"
-    )
-    actual = rd._reduce_integer_series(int64_series, dtype=dtype)
+@pytest.mark.parametrize(
+    "min_,max_,expected_dtype",
+    [
+        (-128, 127, "int8"),
+        (-128, 128, "int16"),
+        (-129, 127, "int16"),
+        (-129, 128, "int16"),
+        (-32_768, 32_767, "int16"),
+        (-32_768, 32_768, "int32"),
+        (-32_769, 32_767, "int32"),
+        (-32_769, 32_768, "int32"),
+        (-2_147_483_648, 2_147_483_647, "int32"),
+        (-2_147_483_648, 2_147_483_648, "int64"),
+        (-2_147_483_649, 2_147_483_647, "int64"),
+        (-2_147_483_649, 2_147_483_648, "int64"),
+    ],
+)
+def test_reduce_integer_series_not_nullable(min_, max_, expected_dtype):
+    series = pd.Series([min_, max_], dtype="int64")
+    dtype = str(series.dtype)
+    expected = pd.Series([min_, max_], dtype=expected_dtype)
+    actual = rd._reduce_integer_series(series, dtype=dtype)
     assert_series_equal(actual, expected)

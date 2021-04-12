@@ -53,11 +53,11 @@ def _reduce_integer_series(series: pd.Series, dtype: str) -> pd.Series:
         if is_nullable:
             return series.astype("Int8")
         return series.astype("int8")
-    if np.iinfo(np.int16).min <= min_value and np.iinfo(np.int16).max <= max_value:
+    if np.iinfo(np.int16).min <= min_value and max_value <= np.iinfo(np.int16).max:
         if is_nullable:
             return series.astype("Int16")
         return series.astype("int16")
-    if np.iinfo(np.int32).min <= min_value and np.iinfo(np.int32).max <= max_value:
+    if np.iinfo(np.int32).min <= min_value and max_value <= np.iinfo(np.int32).max:
         if is_nullable:
             return series.astype("Int32")
         return series.astype("int32")
