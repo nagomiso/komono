@@ -35,6 +35,13 @@ use_parentheses = true
 known_third_party = "numpy,scipy,sklearn,matplotlib,seaborn,pandas"
 known_first_party = "komono"
 
+[tool.pytest.ini_options]
+minversion = "6.2"
+addopts = """
+    -s \
+    -vv"""
+testpaths = ["tests"]
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
