@@ -21,6 +21,8 @@ NUMERICAL_DTYPES = {
 
 
 def reduce_memory_usage(dataframe: pd.DataFrame, verbose: bool = False) -> pd.DataFrame:
+    # The implementation of this function is based on
+    # https://github.com/TeruakiUeda/faster_reduce_mem_usage
     tmp: List[pd.Series] = []
     raw_memory_usage = dataframe.memory_usage().sum() / 2.0 ** 20
     for col in dataframe.columns:
