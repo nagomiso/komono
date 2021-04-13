@@ -4,19 +4,21 @@ from typing import List
 import numpy as np
 import pandas as pd
 
-NUMERICAL_DTYPES = {
-    "int8",
-    "int16",
-    "int32",
-    "int64",
-    "Int8",
-    "Int16",
-    "Int32",
-    "Int64",
-    "float16",
-    "float32",
-    "float64",
-}
+NUMERICAL_DTYPES = frozenset(
+    [
+        "int8",
+        "int16",
+        "int32",
+        "int64",
+        "Int8",
+        "Int16",
+        "Int32",
+        "Int64",
+        "float16",
+        "float32",
+        "float64",
+    ]
+)
 
 
 def reduce_memory_usage(dataframe: pd.DataFrame, verbose: bool = False) -> pd.DataFrame:
